@@ -23,14 +23,14 @@ class Camilo:
                           "returns the xth layer of Pascal's Triangle"]
         self.answers   = ["120", "3", "14641"]
 
-    def keypress(self, key):
-        if key == curses.KEY_LEFT:
+    def keypress(self, key, dims):
+        if key == curses.KEY_LEFT and self.loc[1] > 5:
             if self.direction == "right":
                 for i in range(len(self.body)):
                     self.body[i] = self.body[i][::-1]
                 self.direction = "left"
             self.loc[1] = self.loc[1] - 1
-        if key == curses.KEY_RIGHT:
+        if key == curses.KEY_RIGHT and (self.loc[1] < (dims[1] - 20)):
             if self.direction == "left":
                 for i in range(len(self.body)):
                     self.body[i] = self.body[i][::-1]
@@ -94,7 +94,7 @@ while game:
     if key == ord('q'):
         game = -1  ## SHUT DOWN GAME
 
-    c.keypress(key)
+    c.keypress(key, dims)
 
 
     if poop_location - 3 == c.loc[1]:  ## Camilo has eaten poop
@@ -103,7 +103,7 @@ while game:
         poop_present = False
         poop_delta = -poop_delta
         
-        stdscr.addstr(0, 0, "Write JS function " + c.level[0] + " that " + c.level_d[0] + " (CTRL + G to send!)")
+        stdscr.addstr(0, 0, "an investor insists you write JS function " + c.level[0] + " that " + c.level_d[0] + "! (CTRL + G to send!)")
 
         editwin = curses.newwin(20,50, 2,1)
         rectangle(stdscr, 1,0, 20, 50)
