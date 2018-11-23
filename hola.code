@@ -1,17 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*- (lol in theory)
 
 import curses
 import os # let's us test code in NodeJS via shell command! No security here folks!
 from curses.textpad import Textbox, rectangle
-import sys ## This makes Unicode (kind of) work
-reload(sys)
-sys.setdefaultencoding('utf-8')
 
 class Camilo:
     def __init__(self):
         self.direction = "left"
-	self.loc       = None
+        self.loc = None
         self.body      = [  
 		"  __      _",
 		"o'')}____//",
@@ -38,7 +35,7 @@ class Camilo:
             self.loc[1] = self.loc[1] + 1
 
     def update_level(self):
-        self.level = self.level[1:]
+        self.level   = self.level[1:]
         self.level_d = self.level_d[1:]
         self.answers = self.answers[1:]
 
@@ -50,7 +47,7 @@ x = 5
 fs.writeFileSync("test", """ + self.level[0] + ", 'utf8')\n")
 
         f.close()
-        os.system("node code.log")
+        os.system("node code.log 2> /dev/null")
         l = open("test", "r")
         r = l.read()
         l.close()
@@ -67,17 +64,21 @@ stdscr.clear()
 ## Instantiate Camilo
 c            = Camilo()
 dims         = stdscr.getmaxyx()
-c.loc        = [dims[0]/2, dims[1]/2]
+c.loc        = [int(dims[0]/2), int(dims[1]/2)]
 floor        = "-" * (dims[1])
 poop         = "💩"
 poop_location = 0
 poop_present = False
-poop_delta   = 15
+poop_delta   = 20
 game         = 1
 final_msg    = "HOLACEOD MAKE BILLION MONEY. YOU HAVE JOB!! $$ MUCH JOB"
+
+os.system("echo '' > test")
+os.system("echo '' > code.log")
+
 ## Game loop
 while game:
-    stdscr.addstr(c.loc[0]+6, dims[1]/2 - 5, "Camilo is hungry for POOP! (q to quit)")
+    stdscr.addstr(c.loc[0]+6, int(dims[1]/2) - 5, "Camilo is hungry for POOP! (q to quit)")
     if game%4==0 and not poop_present:
         poop_present = True
         poop_location = c.loc[1] + poop_delta + 3
@@ -93,11 +94,12 @@ while game:
 
     if key == ord('q'):
         game = -1  ## SHUT DOWN GAME
+        final_msg = "QUITTER YOU LACK DEDICATION FOR OLQCODE TO SUCCEED. NO ONE HAVE JOBS; COMPANY DIES. THANKS ALOT BRAH."
 
     c.keypress(key, dims)
 
 
-    if poop_location - 3 == c.loc[1]:  ## Camilo has eaten poop
+    if poop_location - 8 == c.loc[1]:  ## Camilo has eaten poop
         if len(c.level) == 0:
             break
         poop_present = False
@@ -130,4 +132,7 @@ stdscr.keypad(False)
 curses.echo()
 curses.endwin()
 
-print final_msg
+os.system("echo '' > test")
+os.system("echo '' > code.log")
+
+print(final_msg)
